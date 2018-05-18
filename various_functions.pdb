@@ -1,0 +1,69 @@
+% Tim Leavey
+% Prolog often uses pattern matching and recursion
+% Run with SWI-Prolog
+
+% Boolean Logic
+and(A, B) :- A, B.
+
+or(A, B) :- A; B.
+
+xor(A, B) :- or(A, B), nand(A, B).
+
+nand(A, B) :- not(and(A, B)).
+
+nor(A, B) :- not(or(A, B)).
+
+% Check if Horizontal
+horizontal(_, Y1, _, Y2) :- Y1 is Y2.
+
+% Check if Vertical
+vertical(X1, _, X2, _) :- X1 is X2.
+
+% Places X as "bookends on list"
+bookends(X, Lst, Res) :-
+	append([X], Lst, Res1),
+	reverse(Res1, Res2),
+	append([X], Res2, Res).
+
+% Exponents - Computes X^Y, stores result in Z
+pow(_, 0, 1).
+pow(X, Y, Z) :-
+	Y1 is Y - 1,
+	pow(X, Y1, Z1),
+	Z is X * Z1.
+
+% Returns last element from input list
+my_last([Elem], Elem).
+my_last([_ | Tail], Elem) :- my_last(Tail, Elem).
+
+% Returns second to last element in input list
+scd_last([H1, H2], H1).
+scd_last([H1, H2, H3], H2).
+scd_last([H1, H2 | Tail], H3) :- scd_last(Tail, H3).
+
+% True if X is a palindrome (takes a list)
+palindrome(X) :-
+	reverse(X, Y),
+	Y == X.
+
+% Generates list from X to Y, result in Z
+range(X, Y, Z):-
+	findall(Num, between(X, Y, Num), Z).
+
+% This next data set and functions figure out how long
+% it would take for a person to read a book
+% in minutes based on the person's words per minute (wpm).
+
+wpm(jeff, 160).
+wpm(walter, 180).
+wpm(donny, 240).
+wpm(maude, 300).
+
+total_words(fountainhead, 310000).
+total_words(atlas_shrugged, 560000).
+total_words(crime_and_punishment, 210000).
+total_words(grapes_of_wrath, 170000).
+
+minutes_per_book(Person, Book, Minutes) :-
+	wpm(Person, X), total_words(Book, Y),
+	Minutes is Y / X.
