@@ -65,5 +65,6 @@ total_words(crime_and_punishment, 210000).
 total_words(grapes_of_wrath, 170000).
 
 minutes_per_book(Person, Book, Minutes) :-
-	wpm(Person, X), total_words(Book, Y),
+	wpm(Person, X),
+	total_words(Book, Y),
 	Minutes is Y / X.
